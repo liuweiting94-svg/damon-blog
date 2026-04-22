@@ -1,4 +1,4 @@
-import { Mail, MapPin, Briefcase, GraduationCap, BookOpen, ExternalLink } from "lucide-react";
+import { Mail, MapPin, Briefcase, GraduationCap, BookOpen, ExternalLink, Cpu } from "lucide-react";
 
 const experience = [
   {
@@ -36,6 +36,24 @@ const education = [
   },
 ];
 
+const technicalFocus = [
+  {
+    area: "Kafka & Event Streaming",
+    detail:
+      "Durability guarantees (acks, ISR, min.insync.replicas), idempotent producers, exactly-once semantics via transactions, HW vs LSO, consumer group rebalancing, Kafka Streams state store management and restoration.",
+  },
+  {
+    area: "Distributed Systems",
+    detail:
+      "Fault tolerance, consistency tradeoffs, backpressure handling, and debugging production incidents in large-scale stream processing systems.",
+  },
+  {
+    area: "Observability & SRE",
+    detail:
+      "Designing alerting that catches what metrics miss — e.g. consumer lag against LSO rather than high watermark, silent state corruption from missing exception handlers.",
+  },
+];
+
 const publications = [
   {
     title: "Interference Relation-Guided SMT Solving for Multi-Threaded Program Verification",
@@ -59,8 +77,8 @@ export default function Home() {
         <p className="mt-4 text-neutral-700 dark:text-neutral-300 leading-relaxed">
           Joined Indeed in 2019 after graduating from Tsinghua University with a Master&apos;s
           degree in Software Engineering. I moved to Tokyo and have lived here ever since.
-          I spend my time building reliable, large-scale systems and thinking about distributed
-          systems, observability, and engineering culture.
+          I spend my time building reliable, large-scale systems and thinking deeply about
+          distributed systems, event streaming, observability, and engineering culture.
         </p>
       </section>
 
@@ -119,6 +137,24 @@ export default function Home() {
               <p className="font-medium text-neutral-900 dark:text-neutral-100">{edu.degree}</p>
               <p className="text-sm text-neutral-500 dark:text-neutral-400">
                 {edu.school} · {edu.period}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Technical Focus */}
+      <section>
+        <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 mb-4 flex items-center gap-2">
+          <Cpu size={14} />
+          Technical Focus
+        </h2>
+        <div className="space-y-5">
+          {technicalFocus.map((item) => (
+            <div key={item.area}>
+              <p className="font-medium text-neutral-900 dark:text-neutral-100">{item.area}</p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mt-0.5">
+                {item.detail}
               </p>
             </div>
           ))}
