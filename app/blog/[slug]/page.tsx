@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProgressBar } from "./ProgressBar";
 
@@ -171,8 +172,19 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     <>
       <ProgressBar />
 
+      <div className="max-w-[680px] mx-auto px-6 pt-10">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm transition-colors"
+          style={{ color: "#5a5148", fontFamily: "var(--font-dm-serif)" }}
+        >
+          <span aria-hidden>←</span>
+          <span className="hover:underline underline-offset-2">Home</span>
+        </Link>
+      </div>
+
       <article
-        className="max-w-[680px] mx-auto px-6 pt-20 pb-32"
+        className="max-w-[680px] mx-auto px-6 pt-10 pb-32"
         style={{ color: "#1a1612" }}
       >
         {/* Category */}
