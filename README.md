@@ -16,6 +16,7 @@ Personal site and blog of Weiting Liu — Staff SRE at Indeed, based in Tokyo.
 | Slug | Title |
 |------|-------|
 | `kafka-consumer-lag` | Your Kafka Lag Monitor Is Lying to You |
+| `interference-relation-smt` | Teaching an SMT Solver to Think About Threads |
 
 ## Local development
 

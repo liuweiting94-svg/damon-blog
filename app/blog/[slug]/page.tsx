@@ -1,7 +1,56 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProgressBar } from "./ProgressBar";
 
 const posts: Record<string, Post> = {
+  "interference-relation-smt": {
+    slug: "interference-relation-smt",
+    category: "Research",
+    title: "Teaching an SMT Solver to Think About Threads",
+    subtitle:
+      "The idea behind our Best Paper at PPoPP 2022 — and why treating your solver as a black box leaves performance on the table.",
+    author: "Weiting Liu",
+    date: "April 22, 2026",
+    readingTime: "6 min read",
+    content: [
+      {
+        type: "lede",
+        text: "Formal verification of concurrent programs has a reputation for being slow. Some of that slowness is fundamental. But some of it comes from ignoring structure that was sitting in plain sight.",
+      },
+      {
+        type: "section",
+        heading: "The problem with thread interleavings",
+        body: "Proving that a multi-threaded program is correct means accounting for every order in which threads can execute. The space of possible interleavings grows exponentially with thread count — a fact that has kept concurrent program verification largely out of reach for real-world codebases.\n\nThe standard engineering response is to encode the program as a formula and hand it to an SMT solver. The solver searches the formula space for a counterexample, or proves no counterexample exists. This works, but it treats the SMT solver as a black box: all the structure of the concurrent program gets flattened into a pile of constraints, and the solver has to rediscover that structure on its own.",
+      },
+      {
+        type: "pullquote",
+        text: "Not all threads can interfere with each other at every point. That constraint is knowable before you ever call the solver — so why not tell it?",
+      },
+      {
+        type: "section",
+        heading: "Interference relations as solver guidance",
+        body: "Our key observation was that thread interferences in real programs have structure. An interference happens when one thread reads a memory location that another thread has written. But which threads write which locations, and when, is not arbitrary — it is determined by the program's control flow and data flow.\n\nWe define an **interference relation**: a statically computed map of which thread actions can actually affect which other threads. If thread A never writes to a variable that thread B reads, they cannot interfere on that variable, and the solver does not need to consider that ordering.\n\nThe prototype tool, **Zpre**, extracts this interference relation from the program before invoking the SMT backend. Instead of a monolithic formula, the solver receives guidance about which portions of the search space are reachable — turning a black-box query into a more directed one.",
+      },
+      {
+        type: "section",
+        heading: "Memory models matter",
+        body: "Modern processors do not execute instructions in the order you write them. The **memory consistency model** defines which reorderings are permitted. We evaluated Zpre across three models:\n\n- **SC** (Sequential Consistency) — the intuitive model: instructions execute in order across all threads.\n- **TSO** (Total Store Order) — used by x86; write operations can be delayed in a store buffer.\n- **PSO** (Partial Store Order) — a further relaxation where different memory locations can have independent store buffers.\n\nVerification under TSO and PSO is harder than SC because the solver must also account for the additional behaviors introduced by the memory model. The interference relation approach generalises across all three, which was a non-obvious part of the design.",
+      },
+      {
+        type: "pullquote",
+        text: "The interference relation does not change what the solver proves. It changes how quickly the solver finds the proof.",
+      },
+      {
+        type: "section",
+        heading: "Results",
+        body: "We benchmarked Zpre against CBMC, the leading bounded model checker, using the ConcurrencySafety category from the 2019 SV-COMP competition. Across all three memory models, Zpre solved more benchmarks within the time limit and spent less time on the benchmarks both tools solved.\n\nThe improvement was not uniform — programs with tightly coupled threads and frequent shared-memory access benefited most, because those are exactly the cases where the interference relation is most selective. Programs where every thread touches the same variables saw smaller gains, since the relation rules out fewer orderings.",
+      },
+      {
+        type: "closing",
+        text: "The paper won the Best Paper Award at PPoPP 2022. I have moved from formal methods research into production systems engineering since then, but the underlying instinct carries over: when you have domain knowledge about the structure of a problem, encoding that knowledge explicitly almost always beats hoping that a general-purpose solver will find it on its own. That is as true for an SMT backend as it is for a Kafka consumer lag monitor.",
+      },
+    ],
+  },
   "kafka-consumer-lag": {
     slug: "kafka-consumer-lag",
     category: "Distributed Systems",
@@ -123,8 +172,19 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     <>
       <ProgressBar />
 
+      <div className="max-w-[680px] mx-auto px-6 pt-10">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm transition-colors"
+          style={{ color: "#5a5148", fontFamily: "var(--font-dm-serif)" }}
+        >
+          <span aria-hidden>←</span>
+          <span className="hover:underline underline-offset-2">Home</span>
+        </Link>
+      </div>
+
       <article
-        className="max-w-[680px] mx-auto px-6 pt-20 pb-32"
+        className="max-w-[680px] mx-auto px-6 pt-10 pb-32"
         style={{ color: "#1a1612" }}
       >
         {/* Category */}

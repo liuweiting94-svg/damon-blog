@@ -1,4 +1,6 @@
-import { Mail, MapPin, Briefcase, GraduationCap, BookOpen, ExternalLink, Cpu } from "lucide-react";
+import Link from "next/link";
+import { Mail, MapPin, Briefcase, GraduationCap, BookOpen, ExternalLink, Cpu, PenLine } from "lucide-react";
+import { allPosts } from "./blog/posts";
 
 const experience = [
   {
@@ -157,6 +159,47 @@ export default function Home() {
                 {item.detail}
               </p>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Writing */}
+      <section>
+        <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 mb-6 flex items-center gap-2">
+          <PenLine size={14} />
+          Writing
+        </h2>
+        <div className="space-y-8">
+          {allPosts.map((post) => (
+            <Link
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              className="group block pl-4 border-l-2 border-transparent hover:border-[#c9a84c] transition-colors duration-200"
+            >
+              <p
+                className="text-xs tracking-[0.18em] uppercase mb-1"
+                style={{ color: "#c9a84c", fontFamily: "var(--font-playfair)" }}
+              >
+                {post.category}
+              </p>
+              <p
+                className="text-lg leading-snug mb-1 text-neutral-900 dark:text-neutral-100 group-hover:text-[#1a1612] transition-colors"
+                style={{ fontFamily: "var(--font-playfair)", fontWeight: 600 }}
+              >
+                {post.title}
+              </p>
+              <p
+                className="text-sm italic leading-relaxed text-neutral-500 dark:text-neutral-400 mb-2"
+                style={{ fontFamily: "var(--font-dm-serif)" }}
+              >
+                {post.subtitle}
+              </p>
+              <p className="text-xs text-neutral-400 dark:text-neutral-500">
+                {post.date}
+                <span className="mx-2" style={{ color: "#c9a84c" }}>·</span>
+                {post.readingTime}
+              </p>
+            </Link>
           ))}
         </div>
       </section>
